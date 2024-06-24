@@ -27,7 +27,8 @@ class AInstructionTest {
         val address = (-1).toShort()
 
         //When, Then
-        assertThrows<IllegalArgumentException>("Negative address '-1' is not supported for A instructions") { AInstruction(address) }
+        val exception = assertThrows<IllegalArgumentException> { AInstruction(address) }
+        assertEquals(exception.message, "Negative address '-1' is not supported for A instructions")
     }
 
     companion object {
