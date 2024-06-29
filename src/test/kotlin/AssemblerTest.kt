@@ -24,6 +24,23 @@ class AssemblerTest {
         assertEquals(expectedHackInstructions, actualAsmInstruction)
     }
 
+    @ParameterizedTest
+    @MethodSource("hackWithymbolProvider")
+    fun testAssemblerWithSymbol(testFilePath: String,) {
+        //Given
+        val asmFile = File(AssemblerTest::class.java.getResource("$testFilePath.asm").file)
+        val expectedHackInstructions = File(AssemblerTest::class.java.getResource("$testFilePath.hack").file)
+            .readLines()
+            .filterNot { it.isEmpty() }
+            .joinToString(System.lineSeparator())
+
+        //When
+        val actualAsmInstruction = Assembler.parseToBinary(asmFile)
+
+        //Then
+        assertEquals(expectedHackInstructions, actualAsmInstruction)
+    }
+
     companion object {
         @JvmStatic
         fun hackNoSymbolProvider(): Stream<Arguments> = Stream.of(
@@ -31,6 +48,13 @@ class AssemblerTest {
             Arguments.arguments("max/MaxL"),
             Arguments.arguments("rect/RectL"),
             Arguments.arguments("pong/PongL"),
+        )
+
+        @JvmStatic
+        fun hackWithymbolProvider(): Stream<Arguments> = Stream.of(
+            Arguments.arguments("max/Max"),
+            Arguments.arguments("rect/Rect"),
+            Arguments.arguments("pong/Pong"),
         )
     }
 }

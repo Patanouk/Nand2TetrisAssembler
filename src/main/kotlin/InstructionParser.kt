@@ -1,15 +1,9 @@
 class InstructionParser {
     companion object {
-        fun toInstruction(asmInstruction: String): HackInstruction? {
-            val sanitizedAsmInstruction = asmInstruction.substringBefore("//").replace(" ", "")
-            if (sanitizedAsmInstruction.isEmpty()) {
-                println("Skipping comment line '$asmInstruction'")
-                return null
-            }
-
-            return when(sanitizedAsmInstruction.first()) {
-                '@' -> parseAInstruction(sanitizedAsmInstruction)
-                else -> parseCInstruction(sanitizedAsmInstruction)
+        fun toInstruction(asmInstruction: String): HackInstruction {
+            return when(asmInstruction.first()) {
+                '@' -> parseAInstruction(asmInstruction)
+                else -> parseCInstruction(asmInstruction)
             }
         }
 
