@@ -34,7 +34,7 @@ class SymbolTable(asmInstructions: List<String>) {
 
     private fun fillSymbolTableWithLabels(asmInstructions: List<String>) {
         var realInstructionLineIndex: Short = 0
-        var currentLabels= mutableSetOf<String>()
+        val currentLabels= mutableSetOf<String>()
 
         for (asmInstruction in asmInstructions) {
             val sanitizeAsmLine = sanitizeLine(asmInstruction)

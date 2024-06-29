@@ -9,7 +9,7 @@ class AssemblerTest {
 
     @ParameterizedTest
     @MethodSource("hackNoSymbolProvider")
-    fun testAssemblerNoSymbol(testFilePath: String,) {
+    fun testAssemblerNoSymbol(testFilePath: String) {
         //Given
         val asmFile = File(AssemblerTest::class.java.getResource("$testFilePath.asm").file)
         val expectedHackInstructions = File(AssemblerTest::class.java.getResource("$testFilePath.hack").file)
@@ -26,7 +26,7 @@ class AssemblerTest {
 
     @ParameterizedTest
     @MethodSource("hackWithymbolProvider")
-    fun testAssemblerWithSymbol(testFilePath: String,) {
+    fun testAssemblerWithSymbol(testFilePath: String) {
         //Given
         val asmFile = File(AssemblerTest::class.java.getResource("$testFilePath.asm").file)
         val expectedHackInstructions = File(AssemblerTest::class.java.getResource("$testFilePath.hack").file)

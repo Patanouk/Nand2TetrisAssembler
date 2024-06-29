@@ -5,7 +5,7 @@ fun isCommentLine(asmLine: String): Boolean {
         return true
     }
 
-    return false;
+    return false
 }
 
 fun isLabelSymbolLine(asmLine: String): Boolean {
