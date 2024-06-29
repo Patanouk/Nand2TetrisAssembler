@@ -18,7 +18,7 @@ class AssemblerTest {
             .joinToString(System.lineSeparator())
 
         //When
-        val actualAsmInstruction = Assembler.parseToBinary(asmFile)
+        val actualAsmInstruction = Assembler(asmFile).parseToBinary()
 
         //Then
         assertEquals(expectedHackInstructions, actualAsmInstruction)
@@ -35,7 +35,7 @@ class AssemblerTest {
             .joinToString(System.lineSeparator())
 
         //When
-        val actualAsmInstruction = Assembler.parseToBinary(asmFile)
+        val actualAsmInstruction = Assembler(asmFile).parseToBinary()
 
         //Then
         assertEquals(expectedHackInstructions, actualAsmInstruction)
