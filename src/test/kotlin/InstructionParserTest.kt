@@ -2,15 +2,17 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import java.util.*
 import java.util.stream.Stream
 
 class InstructionParserTest {
+    private val instructionParser = InstructionParser(SymbolTable(Collections.emptyList()))
 
     @ParameterizedTest
     @MethodSource("aInstructionProvider")
     fun testParseAInstruction(aInstruction: String, expectedAInstruction: AInstruction) {
         //When
-        val actualAInstruction = InstructionParser.toInstruction(aInstruction)
+        val actualAInstruction = instructionParser.toInstruction(aInstruction)
 
         //Then
         assertEquals(expectedAInstruction, actualAInstruction)
@@ -20,7 +22,7 @@ class InstructionParserTest {
     @MethodSource("cInstructionProvider")
     fun testParseCInstruction(cInstruction: String, expectedCInstruction: CInstruction) {
         //When
-        val actualCInstruction = InstructionParser.toInstruction(cInstruction)
+        val actualCInstruction = instructionParser.toInstruction(cInstruction)
 
         //Then
         assertEquals(expectedCInstruction, actualCInstruction)

@@ -1,5 +1,3 @@
-import java.io.File
-
 class SymbolTable(asmInstructions: List<String>) {
 
     private val symbolsToAddress = mutableMapOf<String, Short>(
@@ -58,13 +56,13 @@ class SymbolTable(asmInstructions: List<String>) {
         }
     }
 
-    fun addSymbol(symbol: String): Short {
+    private fun addSymbol(symbol: String): Short {
         val result = addSymbol(symbol, currentFreeMemoryAddress)
         currentFreeMemoryAddress++
         return result
     }
 
-    fun addSymbol(symbol: String, address: Short): Short {
+    private fun addSymbol(symbol: String, address: Short): Short {
         symbolsToAddress[symbol] = address
         return address
     }
