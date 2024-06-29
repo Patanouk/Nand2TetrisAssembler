@@ -1,17 +1,21 @@
-data class AInstruction(val address: Short) {
+interface HackInstruction {
+    fun toHack(): String
+}
+
+data class AInstruction(val address: Short): HackInstruction {
 
     init {
         require(address >= 0) { "Negative address '$address' is not supported for A instructions" }
     }
 
-    fun toHack(): String {
+    override fun toHack(): String {
         return String.format("%16s", address.toString(2)).replace(' ', '0')
     }
 }
 
-data class CInstruction(val dest: String?, val comp: String, val jump: String?) {
+data class CInstruction(val dest: String?, val comp: String, val jump: String?): HackInstruction {
 
-    fun toHack(): String {
+    override fun toHack(): String {
         val sortedDestination = dest?.toCharArray()?.apply { sort() }?.joinToString(separator = "")
 
         val destBinary = destinationTable[sortedDestination] ?: throw IllegalArgumentException("Destination '$dest' is not supported for C instruction")

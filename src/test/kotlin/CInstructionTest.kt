@@ -10,7 +10,7 @@ import kotlin.test.Test
 class CInstructionTest {
 
     @ParameterizedTest
-    @MethodSource("aInstructionProvider")
+    @MethodSource("cInstructionProvider")
     fun `should parse A instruction properly`(dest: String?, comp: String, jump: String?, expectedHackInstruction: String) {
         //Given
         val cInstruction = CInstruction(dest, comp, jump)
@@ -53,7 +53,7 @@ class CInstructionTest {
 
     companion object {
         @JvmStatic
-        fun aInstructionProvider(): Stream<Arguments> = Stream.of(
+        fun cInstructionProvider(): Stream<Arguments> = Stream.of(
             arguments(null, "0", null, "1110101010000000"),
             arguments("D", "D+1", "JLE", "1110011111010110"),
             arguments("DM", "D+1", "JLE", "1110011111011110"),
