@@ -16,7 +16,7 @@ class CInstructionTest {
         val cInstruction = CInstruction(dest, comp, jump)
 
         //When
-        val actuallHackInstruction = cInstruction.toHack()
+        val actuallHackInstruction = cInstruction.toHackBinary()
 
         assertEquals(expectedHackInstruction, actuallHackInstruction)
     }
@@ -27,7 +27,7 @@ class CInstructionTest {
         val cInstruction = CInstruction(dest = "unknown", comp = "0", jump = "JGT")
 
         //When, Then
-        val exception = assertThrows<IllegalArgumentException> { cInstruction.toHack() }
+        val exception = assertThrows<IllegalArgumentException> { cInstruction.toHackBinary() }
         assertEquals("Destination 'unknown' is not supported for C instruction", exception.message)
     }
 
@@ -37,7 +37,7 @@ class CInstructionTest {
         val cInstruction = CInstruction(dest = "M", comp = "0", jump = "unknown")
 
         //When, Then
-        val exception = assertThrows<IllegalArgumentException> { cInstruction.toHack() }
+        val exception = assertThrows<IllegalArgumentException> { cInstruction.toHackBinary() }
         assertEquals("Jump 'unknown' is not supported for C instruction", exception.message)
     }
 
@@ -47,7 +47,7 @@ class CInstructionTest {
         val cInstruction = CInstruction(dest = "M", comp = "unknown", jump = "JGT")
 
         //When, Then
-        val exception = assertThrows<IllegalArgumentException> { cInstruction.toHack() }
+        val exception = assertThrows<IllegalArgumentException> { cInstruction.toHackBinary() }
         assertEquals("Computation 'unknown' is not supported for C instruction", exception.message)
     }
 

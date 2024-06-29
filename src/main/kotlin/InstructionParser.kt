@@ -1,4 +1,4 @@
-class Parser {
+class InstructionParser {
     companion object {
         fun toInstruction(asmInstruction: String): HackInstruction? {
             val sanitizedAsmInstruction = asmInstruction.substringBefore("//").replace(" ", "")

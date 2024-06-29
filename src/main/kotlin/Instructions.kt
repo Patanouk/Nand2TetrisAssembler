@@ -1,5 +1,5 @@
 interface HackInstruction {
-    fun toHack(): String
+    fun toHackBinary(): String
 }
 
 data class AInstruction(val address: Short): HackInstruction {
@@ -8,14 +8,14 @@ data class AInstruction(val address: Short): HackInstruction {
         require(address >= 0) { "Negative address '$address' is not supported for A instructions" }
     }
 
-    override fun toHack(): String {
+    override fun toHackBinary(): String {
         return String.format("%16s", address.toString(2)).replace(' ', '0')
     }
 }
 
 data class CInstruction(val dest: String?, val comp: String, val jump: String?): HackInstruction {
 
-    override fun toHack(): String {
+    override fun toHackBinary(): String {
         val sortedDestination = dest?.toCharArray()?.apply { sort() }?.joinToString(separator = "")
 
         val destBinary = destinationTable[sortedDestination] ?: throw IllegalArgumentException("Destination '$dest' is not supported for C instruction")

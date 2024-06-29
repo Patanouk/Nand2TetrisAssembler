@@ -16,7 +16,7 @@ class AInstructionTest {
         val aInstruction = AInstruction(address)
 
         //When
-        val actuallHackInstruction = aInstruction.toHack()
+        val actuallHackInstruction = aInstruction.toHackBinary()
 
         assertEquals(expectedHackInstruction, actuallHackInstruction)
     }

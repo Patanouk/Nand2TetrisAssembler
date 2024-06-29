@@ -4,13 +4,13 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
 
-class ParserTest {
+class InstructionParserTest {
 
     @ParameterizedTest
     @MethodSource("aInstructionProvider")
     fun testParseAInstruction(aInstruction: String, expectedAInstruction: AInstruction) {
         //When
-        val actualAInstruction = Parser.toInstruction(aInstruction)
+        val actualAInstruction = InstructionParser.toInstruction(aInstruction)
 
         //Then
         assertEquals(expectedAInstruction, actualAInstruction)
@@ -20,7 +20,7 @@ class ParserTest {
     @MethodSource("cInstructionProvider")
     fun testParseCInstruction(cInstruction: String, expectedCInstruction: CInstruction) {
         //When
-        val actualCInstruction = Parser.toInstruction(cInstruction)
+        val actualCInstruction = InstructionParser.toInstruction(cInstruction)
 
         //Then
         assertEquals(expectedCInstruction, actualCInstruction)
