@@ -6,12 +6,20 @@ class Assembler(private val asmInstructionFile: File) {
     private val instructionParser = InstructionParser(symbolTable)
 
     fun parseToBinary(): String {
-
-        return asmInstructionFile.readLines().asSequence()
+        val asmInstructionsOnly = asmInstructionFile.readLines().asSequence()
             .map { sanitizeLine(it) }
             .filterNot { isCommentLine(it) }
             .filterNot { isLabelSymbolLine(it) }
-            .map { instructionParser.toInstruction(it) }
+
+
+        return asmInstructionsOnly
+            .mapIndexed { index, asmLine -> parseInstruction(index, asmLine) }
             .joinToString(System.lineSeparator()) { it.toHackBinary() }
+    }
+
+    private fun parseInstruction(index: Int, asmLine: String): HackInstruction {
+        val result = instructionParser.toInstruction(asmLine)
+        println("Parsed line #$index '$asmLine' to $result")
+        return result
     }
 }

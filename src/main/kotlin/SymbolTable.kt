@@ -34,7 +34,7 @@ class SymbolTable(asmInstructions: List<String>) {
 
     private fun fillSymbolTableWithLabels(asmInstructions: List<String>) {
         var realInstructionLineIndex: Short = 0
-        var currentLabel: String? = null
+        var currentLabels= mutableSetOf<String>()
 
         for (asmInstruction in asmInstructions) {
             val sanitizeAsmLine = sanitizeLine(asmInstruction)
@@ -43,15 +43,12 @@ class SymbolTable(asmInstructions: List<String>) {
             }
 
             if (isLabelSymbolLine(sanitizeAsmLine)) {
-                currentLabel = sanitizeAsmLine.trim('(').trimEnd(')')
+                currentLabels.add(sanitizeAsmLine.trim('(').trimEnd(')'))
                 continue
             }
 
-            if (currentLabel != null) {
-                addSymbol(currentLabel, realInstructionLineIndex)
-            }
-
-            currentLabel = null
+            currentLabels.forEach {addSymbol(it, realInstructionLineIndex)}
+            currentLabels.clear()
             realInstructionLineIndex++
         }
     }
