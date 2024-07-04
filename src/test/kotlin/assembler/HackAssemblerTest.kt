@@ -7,20 +7,20 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.io.File
 import java.util.stream.Stream
 
-class AssemblerTest {
+class HackAssemblerTest {
 
     @ParameterizedTest
     @MethodSource("hackNoSymbolProvider")
     fun testAssemblerNoSymbol(testFilePath: String) {
         //Given
-        val asmFile = File(AssemblerTest::class.java.getResource("$testFilePath.asm").file)
-        val expectedHackInstructions = File(AssemblerTest::class.java.getResource("$testFilePath.hack").file)
+        val asmFile = File(HackAssemblerTest::class.java.getResource("$testFilePath.asm").file)
+        val expectedHackInstructions = File(HackAssemblerTest::class.java.getResource("$testFilePath.hack").file)
             .readLines()
             .filterNot { it.isEmpty() }
             .joinToString(System.lineSeparator())
 
         //When
-        val actualAsmInstruction = Assembler(asmFile).writeToString()
+        val actualAsmInstruction = HackAssembler(asmFile).writeToString()
 
         //Then
         assertEquals(expectedHackInstructions, actualAsmInstruction)
@@ -30,14 +30,14 @@ class AssemblerTest {
     @MethodSource("hackWithymbolProvider")
     fun testAssemblerWithSymbol(testFilePath: String) {
         //Given
-        val asmFile = File(AssemblerTest::class.java.getResource("$testFilePath.asm").file)
-        val expectedHackInstructions = File(AssemblerTest::class.java.getResource("$testFilePath.hack").file)
+        val asmFile = File(HackAssemblerTest::class.java.getResource("$testFilePath.asm").file)
+        val expectedHackInstructions = File(HackAssemblerTest::class.java.getResource("$testFilePath.hack").file)
             .readLines()
             .filterNot { it.isEmpty() }
             .joinToString(System.lineSeparator())
 
         //When
-        val actualAsmInstruction = Assembler(asmFile).writeToString()
+        val actualAsmInstruction = HackAssembler(asmFile).writeToString()
 
         //Then
         assertEquals(expectedHackInstructions, actualAsmInstruction)

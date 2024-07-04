@@ -1,4 +1,4 @@
-import assembler.Assembler
+import assembler.HackAssembler
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.mainBody
 import java.io.File
@@ -6,7 +6,7 @@ import java.io.File
 fun main(args : Array<String>): Unit = mainBody {
     ArgParser(args).parseInto(::MyArgs).run {
         when(program) {
-            ProgramType.Assembler -> Assembler(inputFile).writeToFile()
+            ProgramType.Assembler -> HackAssembler(inputFile).writeToFile()
         }
     }
 }

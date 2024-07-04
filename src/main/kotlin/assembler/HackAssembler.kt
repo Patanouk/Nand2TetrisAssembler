@@ -2,7 +2,7 @@ package assembler
 
 import java.io.File
 
-class Assembler(private val asmInstructionFile: File) {
+class HackAssembler(private val asmInstructionFile: File) {
 
     private val symbolTable = SymbolTable(asmInstructionFile.readLines())
     private val instructionParser = InstructionParser(symbolTable)
