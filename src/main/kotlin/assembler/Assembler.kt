@@ -7,7 +7,13 @@ class Assembler(private val asmInstructionFile: File) {
     private val symbolTable = SymbolTable(asmInstructionFile.readLines())
     private val instructionParser = InstructionParser(symbolTable)
 
-    fun parseToBinary(): String {
+    fun writeToFile(): File {
+        val outputFile = File("${asmInstructionFile.nameWithoutExtension}.hack")
+        outputFile.writeBytes(writeToString().toByteArray())
+        return outputFile
+    }
+
+    fun writeToString(): String {
         val asmInstructionsOnly = asmInstructionFile.readLines().asSequence()
             .map { sanitizeLine(it) }
             .filterNot { isCommentLine(it) }
