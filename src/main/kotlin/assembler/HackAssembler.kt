@@ -1,5 +1,7 @@
 package assembler
 
+import utils.isCommentLine
+import utils.sanitizeLine
 import java.io.File
 
 class HackAssembler(private val asmInstructionFile: File) {

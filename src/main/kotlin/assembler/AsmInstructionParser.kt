@@ -9,7 +9,7 @@ class AsmInstructionParser(private val symbolTable: SymbolTable) {
         }
     }
 
-    private fun parseCInstruction(asmInstruction: String): HackInstruction {
+    private fun parseCInstruction(asmInstruction: String): CInstruction {
         val dest = asmInstruction.substringBefore('=', "").ifEmpty { null }
         val jump = asmInstruction.substringAfter(';', "").ifEmpty { null }
         val comp = asmInstruction.substringAfter('=').substringBefore(';')
@@ -17,7 +17,7 @@ class AsmInstructionParser(private val symbolTable: SymbolTable) {
         return CInstruction(dest, comp, jump)
     }
 
-    private fun parseAInstruction(asmInstruction: String): HackInstruction {
+    private fun parseAInstruction(asmInstruction: String): AInstruction {
         val addressString = asmInstruction.substring(1)
         val address = addressString.toShortOrNull() ?: symbolTable.getSymbolAddressOrAdd(addressString)
 

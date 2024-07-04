@@ -1,17 +1,19 @@
 import assembler.HackAssembler
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.mainBody
+import vmtranslator.VmTranslator
 import java.io.File
 
 fun main(args : Array<String>): Unit = mainBody {
     ArgParser(args).parseInto(::MyArgs).run {
         when(program) {
             ProgramType.Assembler -> HackAssembler(inputFile).writeToFile()
+            ProgramType.VmTranslator -> VmTranslator(inputFile).writeToFile()
         }
     }
 }
 enum class ProgramType {
-    Assembler,
+    Assembler, VmTranslator,
 }
 
 class MyArgs(parser: ArgParser) {
@@ -21,5 +23,6 @@ class MyArgs(parser: ArgParser) {
 
     val program by parser.mapping(
         "--assembler" to ProgramType.Assembler,
+        "--vm-translator" to ProgramType.VmTranslator,
         help = "type of program to run")
 }

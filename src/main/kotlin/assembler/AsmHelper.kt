@@ -1,7 +1,5 @@
 package assembler
 
-fun isCommentLine(asmLine: String) = sanitizeLine(asmLine).isEmpty()
+import utils.sanitizeLine
 
 fun isLabelSymbolLine(asmLine: String) = sanitizeLine(asmLine).startsWith('(')
-
-fun sanitizeLine(asmLine: String) = asmLine.replace(" ", "").substringBefore("//")
