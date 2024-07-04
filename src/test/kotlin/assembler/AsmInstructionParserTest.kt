@@ -1,9 +1,5 @@
 package assembler
 
-import assembler.AInstruction
-import assembler.CInstruction
-import assembler.InstructionParser
-import assembler.SymbolTable
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -11,14 +7,14 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.util.*
 import java.util.stream.Stream
 
-class InstructionParserTest {
-    private val instructionParser = InstructionParser(SymbolTable(Collections.emptyList()))
+class AsmInstructionParserTest {
+    private val asmInstructionParser = AsmInstructionParser(SymbolTable(Collections.emptyList()))
 
     @ParameterizedTest
     @MethodSource("aInstructionProvider")
     fun testParseAInstruction(aInstruction: String, expectedAInstruction: AInstruction) {
         //When
-        val actualAInstruction = instructionParser.toInstruction(aInstruction)
+        val actualAInstruction = asmInstructionParser.toInstruction(aInstruction)
 
         //Then
         assertEquals(expectedAInstruction, actualAInstruction)
@@ -28,7 +24,7 @@ class InstructionParserTest {
     @MethodSource("cInstructionProvider")
     fun testParseCInstruction(cInstruction: String, expectedCInstruction: CInstruction) {
         //When
-        val actualCInstruction = instructionParser.toInstruction(cInstruction)
+        val actualCInstruction = asmInstructionParser.toInstruction(cInstruction)
 
         //Then
         assertEquals(expectedCInstruction, actualCInstruction)

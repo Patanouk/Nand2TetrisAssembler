@@ -1,6 +1,6 @@
 package assembler
 
-class InstructionParser(private val symbolTable: SymbolTable) {
+class AsmInstructionParser(private val symbolTable: SymbolTable) {
 
     fun toInstruction(asmInstruction: String): HackInstruction {
         return when (asmInstruction.first()) {

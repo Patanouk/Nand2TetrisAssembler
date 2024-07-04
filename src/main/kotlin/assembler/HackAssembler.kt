@@ -5,7 +5,7 @@ import java.io.File
 class HackAssembler(private val asmInstructionFile: File) {
 
     private val symbolTable = SymbolTable(asmInstructionFile.readLines())
-    private val instructionParser = InstructionParser(symbolTable)
+    private val asmInstructionParser = AsmInstructionParser(symbolTable)
 
     fun writeToFile(): File {
         val outputFile = File("${asmInstructionFile.nameWithoutExtension}.hack")
@@ -26,7 +26,7 @@ class HackAssembler(private val asmInstructionFile: File) {
     }
 
     private fun parseInstruction(index: Int, asmLine: String): HackInstruction {
-        val result = instructionParser.toInstruction(asmLine)
+        val result = asmInstructionParser.toInstruction(asmLine)
         println("Parsed line #$index '$asmLine' to $result")
         return result
     }
