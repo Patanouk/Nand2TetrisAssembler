@@ -11,6 +11,7 @@ repositories {
 }
 
 dependencies {
+    implementation("com.xenomachina:kotlin-argparser:2.0.7")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testImplementation(kotlin("test"))
 }

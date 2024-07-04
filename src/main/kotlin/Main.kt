@@ -1,7 +1,25 @@
 import assembler.Assembler
+import com.xenomachina.argparser.ArgParser
+import com.xenomachina.argparser.mainBody
 import java.io.File
 
-fun main(args : Array<String>) {
-    val asmFile = File(args[0])
-    val assembler = Assembler(asmFile).writeToFile()
+fun main(args : Array<String>): Unit = mainBody {
+    ArgParser(args).parseInto(::MyArgs).run {
+        when(program) {
+            ProgramType.Assembler -> Assembler(inputFile).writeToFile()
+        }
+    }
+}
+enum class ProgramType {
+    Assembler,
+}
+
+class MyArgs(parser: ArgParser) {
+    val inputFile by parser.storing(
+        "-f", "--file",
+        help = "input file to convert",) { File(this) }
+
+    val program by parser.mapping(
+        "--assembler" to ProgramType.Assembler,
+        help = "type of program to run")
 }
