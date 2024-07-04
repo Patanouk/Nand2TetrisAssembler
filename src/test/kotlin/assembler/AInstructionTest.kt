@@ -1,3 +1,6 @@
+package assembler
+
+import assembler.AInstruction
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest

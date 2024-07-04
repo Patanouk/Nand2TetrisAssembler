@@ -1,3 +1,5 @@
+package assembler
+
 fun isCommentLine(asmLine: String) = sanitizeLine(asmLine).isEmpty()
 
 fun isLabelSymbolLine(asmLine: String) = sanitizeLine(asmLine).startsWith('(')

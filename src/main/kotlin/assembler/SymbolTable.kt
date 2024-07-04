@@ -1,3 +1,5 @@
+package assembler
+
 class SymbolTable(asmInstructions: List<String>) {
 
     private val symbolsToAddress = mutableMapOf<String, Short>(

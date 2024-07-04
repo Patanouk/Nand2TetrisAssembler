@@ -1,3 +1,5 @@
+package assembler
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -44,17 +46,17 @@ class AssemblerTest {
     companion object {
         @JvmStatic
         fun hackNoSymbolProvider(): Stream<Arguments> = Stream.of(
-            Arguments.arguments("add/Add"),
-            Arguments.arguments("max/MaxL"),
-            Arguments.arguments("rect/RectL"),
-            Arguments.arguments("pong/PongL"),
+            Arguments.arguments("/assembler/add/Add"),
+            Arguments.arguments("/assembler/max/MaxL"),
+            Arguments.arguments("/assembler/rect/RectL"),
+            Arguments.arguments("/assembler/pong/PongL"),
         )
 
         @JvmStatic
         fun hackWithymbolProvider(): Stream<Arguments> = Stream.of(
-            Arguments.arguments("max/Max"),
-            Arguments.arguments("rect/Rect"),
-            Arguments.arguments("pong/Pong"),
+            Arguments.arguments("/assembler/max/Max"),
+            Arguments.arguments("/assembler/rect/Rect"),
+            Arguments.arguments("/assembler/pong/Pong"),
         )
     }
 }

@@ -1,3 +1,5 @@
+package assembler
+
 import java.io.File
 
 class Assembler(private val asmInstructionFile: File) {

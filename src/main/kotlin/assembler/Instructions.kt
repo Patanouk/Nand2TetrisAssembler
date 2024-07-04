@@ -1,3 +1,5 @@
+package assembler
+
 interface HackInstruction {
     fun toHackBinary(): String
 }
