@@ -1,5 +1,6 @@
 package assembler
 
+import utils.FileUtils
 import utils.isCommentLine
 import utils.sanitizeLine
 import java.io.File
@@ -10,7 +11,7 @@ class HackAssembler(private val asmInstructionFile: File) {
     private val asmInstructionParser = AsmInstructionParser(symbolTable)
 
     fun writeToFile(): File {
-        val outputFile = File("${asmInstructionFile.nameWithoutExtension}.hack")
+        val outputFile = FileUtils.getFileWithNewExtension(file = asmInstructionFile, newExtension = ".hack")
         outputFile.writeBytes(writeToString().toByteArray())
         return outputFile
     }
