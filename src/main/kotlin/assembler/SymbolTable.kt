@@ -1,5 +1,8 @@
 package assembler
 
+import utils.isCommentLine
+import utils.sanitizeLine
+
 class SymbolTable(asmInstructions: List<String>) {
 
     private val symbolsToAddress = mutableMapOf<String, Short>(

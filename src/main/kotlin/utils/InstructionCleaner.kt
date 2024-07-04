@@ -1,5 +1,9 @@
 package utils
 
-fun sanitizeLine(asmLine: String) = asmLine.replace(" ", "").substringBefore("//")
+fun sanitizeLine(instruction: String) = removeComment(removeWhitespaces(instruction))
 
-fun isCommentLine(asmLine: String) = sanitizeLine(asmLine).isEmpty()
+fun removeWhitespaces(instruction: String) = instruction.replace(" ", "")
+
+fun removeComment(instruction: String) = instruction.substringBefore("//")
+
+fun isCommentLine(instruction: String) = sanitizeLine(instruction).isEmpty()
