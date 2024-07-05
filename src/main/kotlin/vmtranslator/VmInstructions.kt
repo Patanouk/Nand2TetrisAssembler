@@ -16,13 +16,13 @@ abstract class VmConditionalInstruction: VmInstruction {
             D=M
             A=A-1
             D=D-M
-            @CONDITION_$counter
+            @TRUE_CONDITION_$counter
             D;${jumpCondition()}
-            D=-1
+            D=0
             @LOAD_$counter
             0;JMP
-            (CONDITION_$counter)
-                D=0
+            (TRUE_CONDITION_$counter)
+                D=-1
                 @LOAD_$counter
                 0;JMP
             (LOAD_$counter)
