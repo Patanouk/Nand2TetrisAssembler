@@ -1,7 +1,15 @@
 package vmtranslator
 
+import vmtranslator.VmInstruction.Companion.FALSE
+import vmtranslator.VmInstruction.Companion.TRUE
+
 interface VmInstruction {
     fun toAsmInstructions(): String
+
+    companion object {
+        const val FALSE = "0"
+        const val TRUE = "-1"
+    }
 }
 
 abstract class VmConditionalInstruction: VmInstruction {
@@ -18,11 +26,11 @@ abstract class VmConditionalInstruction: VmInstruction {
             D=M-D
             @TRUE_CONDITION_$counter
             D;${jumpCondition()}
-            D=0
+            D=$FALSE
             @LOAD_$counter
             0;JMP
             (TRUE_CONDITION_$counter)
-                D=-1
+                D=$TRUE
                 @LOAD_$counter
                 0;JMP
             (LOAD_$counter)
