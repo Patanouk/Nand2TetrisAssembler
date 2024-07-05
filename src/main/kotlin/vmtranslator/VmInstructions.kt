@@ -30,11 +30,11 @@ abstract class VmConditionalInstruction: VmInstruction {
             @LOAD_$counter
             0;JMP
             (TRUE_CONDITION_$counter)
-                D=$TRUE
+            D=$TRUE
             (LOAD_$counter)
-                @SP
-                A=M-1
-                M=D
+            @SP
+            A=M-1
+            M=D
         """.trimIndent()
     }
 
