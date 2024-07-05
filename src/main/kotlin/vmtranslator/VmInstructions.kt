@@ -1,8 +1,5 @@
 package vmtranslator
 
-import jdk.jfr.Timespan
-import vmtranslator.AddInstruction.conditionInstruction
-
 interface VmInstruction {
     fun toAsmInstructions(): String
 
@@ -29,6 +26,15 @@ interface VmInstruction {
                 @SP
                 A=M-1
                 M=D
+        """.trimIndent()
+
+    fun booleanInstruction(booleanInstruction: String) = """
+            @SP
+            M=M-1
+            A=M
+            D=M
+            A=A-1
+            M=D${booleanInstruction}M
         """.trimIndent()
 }
 
@@ -81,29 +87,11 @@ object LtInstruction: VmInstruction {
 }
 
 object AndInstruction: VmInstruction {
-    override fun toAsmInstructions(): String {
-        return """
-            @SP
-            M=M-1
-            A=M
-            D=M
-            A=A-1
-            M=D&M
-        """.trimIndent()
-    }
+    override fun toAsmInstructions() = booleanInstruction("&")
 }
 
 object OrInstruction: VmInstruction {
-    override fun toAsmInstructions(): String {
-        return """
-            @SP
-            M=M-1
-            A=M
-            D=M
-            A=A-1
-            M=D|M
-        """.trimIndent()
-    }
+    override fun toAsmInstructions() = booleanInstruction("|")
 }
 
 object NotInstruction: VmInstruction {
@@ -114,7 +102,6 @@ object NotInstruction: VmInstruction {
             M=!M
         """.trimIndent()
     }
-
 }
 
 class PushConstantInstruction(private val constant: Short): VmInstruction {
@@ -123,10 +110,9 @@ class PushConstantInstruction(private val constant: Short): VmInstruction {
             @$constant
             D=A
             @SP
-            A=M
-            M=D
-            @SP
             M=M+1
+            A=M-1
+            M=D
         """.trimIndent()
     }
 }
