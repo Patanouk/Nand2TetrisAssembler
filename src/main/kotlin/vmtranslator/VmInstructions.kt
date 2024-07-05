@@ -2,80 +2,100 @@ package vmtranslator
 
 interface VmInstruction {
     fun toAsmInstructions(): String
+}
 
-    fun conditionInstruction(condition: String) = """
+abstract class VmConditionalInstruction: VmInstruction {
+    abstract fun jumpCondition(): String
+
+    final override fun toAsmInstructions(): String {
+        counter = counter++;
+
+        return """
             @SP
             AM=M-1
             D=M
             A=A-1
             D=D-M
-            @CONDITION
-            D;$condition
-            @NOTCONDITION
+            @CONDITION_$counter
+            D;${jumpCondition()}
+            @NOTCONDITION_$counter
             0;JMP
-            (CONDITION)
+            (CONDITION_$counter)
                 @0
                 D=A
-                @LOAD
+                @LOAD_$counter
                 0;JMP
-            (NOTCONDITION)
+            (NOTCONDITION_$counter)
                 @1
                 D=A
-            (LOAD)
+            (LOAD_$counter)
                 @SP
                 A=M-1
                 M=D
         """.trimIndent()
+    }
 
-    fun reducerInstruction(reducerOperand: String) = """
+    companion object {
+        var counter = 0
+    }
+}
+
+abstract class VmReducerInstruction: VmInstruction {
+    abstract fun reducerOperand(): String
+
+    final override fun toAsmInstructions() = """
             @SP
             AM=M-1
             D=M
             A=A-1
-            M=D${reducerOperand}M
+            M=D${reducerOperand()}M
         """.trimIndent()
+}
 
-    fun operandInstruction(operand: String) = """
+abstract class VmOperandInstruction: VmInstruction {
+    abstract fun operand(): String
+
+    final override fun toAsmInstructions() = """
             @SP
             A=M-1
-            M=${operand}M
+            M=${operand()}M
         """.trimIndent()
 }
 
-object AddInstruction: VmInstruction {
-    override fun toAsmInstructions() = reducerInstruction("+")
+object AddInstruction: VmReducerInstruction() {
+    override fun reducerOperand() = "+"
 }
 
-object SubInstruction: VmInstruction {
-    override fun toAsmInstructions() = reducerInstruction("-")
+object SubInstruction: VmReducerInstruction() {
+    override fun reducerOperand() = "-"
 }
 
-object NegInstruction: VmInstruction {
-    override fun toAsmInstructions() = operandInstruction("-")
+object AndInstruction: VmReducerInstruction() {
+    override fun reducerOperand() = "&"
 }
 
-object EqInstruction: VmInstruction {
-    override fun toAsmInstructions() = conditionInstruction("JEQ")
+object OrInstruction: VmReducerInstruction() {
+    override fun reducerOperand() = "|"
 }
 
-object GtInstruction: VmInstruction {
-    override fun toAsmInstructions() = conditionInstruction("JGT")
+object EqInstruction: VmConditionalInstruction() {
+    override fun jumpCondition() = "JEQ"
 }
 
-object LtInstruction: VmInstruction {
-    override fun toAsmInstructions() = conditionInstruction("JLT")
+object GtInstruction: VmConditionalInstruction() {
+    override fun jumpCondition() = "JGT"
 }
 
-object AndInstruction: VmInstruction {
-    override fun toAsmInstructions() = reducerInstruction("&")
+object LtInstruction: VmConditionalInstruction() {
+    override fun jumpCondition() = "JLT"
 }
 
-object OrInstruction: VmInstruction {
-    override fun toAsmInstructions() = reducerInstruction("|")
+object NegInstruction: VmOperandInstruction() {
+    override fun operand() = "-"
 }
 
-object NotInstruction: VmInstruction {
-    override fun toAsmInstructions() = operandInstruction("!")
+object NotInstruction: VmOperandInstruction() {
+    override fun operand() = "!"
 }
 
 class PushConstantInstruction(private val constant: Short): VmInstruction {
