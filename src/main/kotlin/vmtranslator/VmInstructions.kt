@@ -8,7 +8,7 @@ abstract class VmConditionalInstruction: VmInstruction {
     abstract fun jumpCondition(): String
 
     final override fun toAsmInstructions(): String {
-        counter = counter++;
+        counter = counter++
 
         return """
             @SP
