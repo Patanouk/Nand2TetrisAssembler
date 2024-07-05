@@ -11,9 +11,7 @@ object AddInstruction: VmInstruction {
             M=M-1
             A=M
             D=M
-            @SP
-            M=M-1
-            A=M
+            A=A-1
             M=D+M
         """.trimIndent()
     }
@@ -26,9 +24,7 @@ object SubInstruction: VmInstruction {
             M=M-1
             A=M
             D=M
-            @SP
-            M=M-1
-            A=M
+            A=A-1
             M=D-M
         """.trimIndent()
     }
@@ -45,6 +41,32 @@ object NegInstruction: VmInstruction {
     }
 }
 
+object EqInstruction: VmInstruction {
+    override fun toAsmInstructions(): String {
+        return """
+            @SP
+            M=M-1
+            A=M
+            D=M
+            A=A-1
+            @EQUAL
+            D=D-M;JEQ
+            @NOTEQUAL
+            D;JNE
+            (EQUAL)
+                @0
+                D=A
+            (NOTEQUAL)
+                @1
+                D=A
+            (LOAD)
+                @SP
+                A=M-1
+                M=D
+        """.trimIndent()
+    }
+
+}
 
 class PushConstantInstruction(private val constant: Short): VmInstruction {
     override fun toAsmInstructions(): String {

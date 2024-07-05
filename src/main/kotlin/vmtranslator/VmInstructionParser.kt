@@ -6,6 +6,9 @@ class VmInstructionParser {
         return with(vmInstruction.trim()) {
             when {
                 equals("add") -> AddInstruction
+                equals("sub") -> SubInstruction
+                equals("neg") -> NegInstruction
+                equals("eq") -> EqInstruction
                 startsWith("push constant") -> parsePushConstantInstruction(this)
                 else -> throw IllegalArgumentException("Unsupported Vm command '$vmInstruction'")
             }
