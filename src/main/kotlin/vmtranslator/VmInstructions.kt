@@ -102,8 +102,7 @@ object NotInstruction: VmOperandInstruction() {
 }
 
 class PushConstantInstruction(private val constant: Short): VmInstruction {
-    override fun toAsmInstructions(): String {
-        return """
+    override fun toAsmInstructions() = """
             @$constant
             D=A
             @SP
@@ -111,5 +110,4 @@ class PushConstantInstruction(private val constant: Short): VmInstruction {
             A=M-1
             M=D
         """.trimIndent()
-    }
 }
