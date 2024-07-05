@@ -34,8 +34,7 @@ object NegInstruction: VmInstruction {
     override fun toAsmInstructions(): String {
         return """
             @SP
-            M=M-1
-            A=M
+            A=M-1
             M=-M
         """.trimIndent()
     }
@@ -49,13 +48,16 @@ object EqInstruction: VmInstruction {
             A=M
             D=M
             A=A-1
+            D=D-M
             @EQUAL
-            D=D-M;JEQ
+            D;JEQ
             @NOTEQUAL
             D;JNE
             (EQUAL)
                 @0
                 D=A
+                @LOAD
+                0;JMP
             (NOTEQUAL)
                 @1
                 D=A
