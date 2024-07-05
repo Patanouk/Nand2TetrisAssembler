@@ -5,8 +5,7 @@ interface VmInstruction {
 
     fun conditionInstruction(condition: String) = """
             @SP
-            M=M-1
-            A=M
+            AM=M-1
             D=M
             A=A-1
             D=D-M
@@ -30,8 +29,7 @@ interface VmInstruction {
 
     fun reducerInstruction(reducerOperand: String) = """
             @SP
-            M=M-1
-            A=M
+            AM=M-1
             D=M
             A=A-1
             M=D${reducerOperand}M
