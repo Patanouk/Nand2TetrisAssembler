@@ -26,13 +26,11 @@ abstract class VmConditionalInstruction: VmInstruction {
             D=M-D
             @TRUE_CONDITION_$counter
             D;${jumpCondition()}
-            D=$FALSE
+            D=$FALSE // If no jump, we know the result is false
             @LOAD_$counter
             0;JMP
             (TRUE_CONDITION_$counter)
                 D=$TRUE
-                @LOAD_$counter
-                0;JMP
             (LOAD_$counter)
                 @SP
                 A=M-1
