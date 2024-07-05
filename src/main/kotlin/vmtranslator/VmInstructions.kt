@@ -28,50 +28,32 @@ interface VmInstruction {
                 M=D
         """.trimIndent()
 
-    fun booleanInstruction(booleanInstruction: String) = """
+    fun reducerInstruction(reducerOperand: String) = """
             @SP
             M=M-1
             A=M
             D=M
             A=A-1
-            M=D${booleanInstruction}M
+            M=D${reducerOperand}M
+        """.trimIndent()
+
+    fun operandInstruction(operand: String) = """
+            @SP
+            A=M-1
+            M=${operand}M
         """.trimIndent()
 }
 
 object AddInstruction: VmInstruction {
-    override fun toAsmInstructions(): String {
-        return """
-            @SP
-            M=M-1
-            A=M
-            D=M
-            A=A-1
-            M=D+M
-        """.trimIndent()
-    }
+    override fun toAsmInstructions() = reducerInstruction("+")
 }
 
 object SubInstruction: VmInstruction {
-    override fun toAsmInstructions(): String {
-        return """
-            @SP
-            M=M-1
-            A=M
-            D=M
-            A=A-1
-            M=D-M
-        """.trimIndent()
-    }
+    override fun toAsmInstructions() = reducerInstruction("-")
 }
 
 object NegInstruction: VmInstruction {
-    override fun toAsmInstructions(): String {
-        return """
-            @SP
-            A=M-1
-            M=-M
-        """.trimIndent()
-    }
+    override fun toAsmInstructions() = operandInstruction("-")
 }
 
 object EqInstruction: VmInstruction {
@@ -87,21 +69,15 @@ object LtInstruction: VmInstruction {
 }
 
 object AndInstruction: VmInstruction {
-    override fun toAsmInstructions() = booleanInstruction("&")
+    override fun toAsmInstructions() = reducerInstruction("&")
 }
 
 object OrInstruction: VmInstruction {
-    override fun toAsmInstructions() = booleanInstruction("|")
+    override fun toAsmInstructions() = reducerInstruction("|")
 }
 
 object NotInstruction: VmInstruction {
-    override fun toAsmInstructions(): String {
-        return """
-            @SP
-            A=M-1
-            M=!M
-        """.trimIndent()
-    }
+    override fun toAsmInstructions() = operandInstruction("!")
 }
 
 class PushConstantInstruction(private val constant: Short): VmInstruction {
