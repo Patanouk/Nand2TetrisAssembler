@@ -1,11 +1,11 @@
 package vmtranslator
 
 interface VmInstruction {
-    fun toAsmInstructions(): List<String>
+    fun toAsmInstructions(): String
 }
 
 class AddInstruction: VmInstruction {
-    override fun toAsmInstructions(): List<String> {
+    override fun toAsmInstructions(): String {
         return """
             @SP
             M=M-1
@@ -15,12 +15,12 @@ class AddInstruction: VmInstruction {
             M=M-1
             A=M
             M=D+M
-        """.trimIndent().split("\n")
+        """.trimIndent()
     }
 }
 
 class PushConstantInstruction(private val constant: Short): VmInstruction {
-    override fun toAsmInstructions(): List<String> {
+    override fun toAsmInstructions(): String {
         return """
             @$constant
             D=A
@@ -29,7 +29,7 @@ class PushConstantInstruction(private val constant: Short): VmInstruction {
             M=D
             @SP
             M=M+1
-        """.trimIndent().split("\n")
+        """.trimIndent()
     }
 
 }
