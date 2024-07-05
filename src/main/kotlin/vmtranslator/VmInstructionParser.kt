@@ -5,7 +5,7 @@ class VmInstructionParser {
     fun toInstruction(vmInstruction: String): VmInstruction {
         return with(vmInstruction.trim()) {
             when {
-                equals("add") -> AddInstruction()
+                equals("add") -> AddInstruction
                 startsWith("push constant") -> parsePushConstantInstruction(this)
                 else -> throw IllegalArgumentException("Unsupported Vm command '$vmInstruction'")
             }

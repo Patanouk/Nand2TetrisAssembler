@@ -4,7 +4,7 @@ interface VmInstruction {
     fun toAsmInstructions(): String
 }
 
-class AddInstruction: VmInstruction {
+object AddInstruction: VmInstruction {
     override fun toAsmInstructions(): String {
         return """
             @SP
