@@ -11,6 +11,9 @@ class VmInstructionParser {
                 equals("eq") -> EqInstruction
                 equals("gt") -> GtInstruction
                 equals("lt") -> LtInstruction
+                equals("and") -> AndInstruction
+                equals("or") -> OrInstruction
+                equals("not") -> NotInstruction
                 startsWith("push constant") -> parsePushConstantInstruction(this)
                 else -> throw IllegalArgumentException("Unsupported Vm command '$vmInstruction'")
             }

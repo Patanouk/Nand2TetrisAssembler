@@ -1,5 +1,6 @@
 package vmtranslator
 
+import jdk.jfr.Timespan
 import vmtranslator.AddInstruction.conditionInstruction
 
 interface VmInstruction {
@@ -77,6 +78,43 @@ object GtInstruction: VmInstruction {
 
 object LtInstruction: VmInstruction {
     override fun toAsmInstructions() = conditionInstruction("JLT")
+}
+
+object AndInstruction: VmInstruction {
+    override fun toAsmInstructions(): String {
+        return """
+            @SP
+            M=M-1
+            A=M
+            D=M
+            A=A-1
+            M=D&M
+        """.trimIndent()
+    }
+}
+
+object OrInstruction: VmInstruction {
+    override fun toAsmInstructions(): String {
+        return """
+            @SP
+            M=M-1
+            A=M
+            D=M
+            A=A-1
+            M=D|M
+        """.trimIndent()
+    }
+}
+
+object NotInstruction: VmInstruction {
+    override fun toAsmInstructions(): String {
+        return """
+            @SP
+            A=M-1
+            M=!M
+        """.trimIndent()
+    }
+
 }
 
 class PushConstantInstruction(private val constant: Short): VmInstruction {
