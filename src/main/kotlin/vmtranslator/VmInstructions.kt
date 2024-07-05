@@ -15,7 +15,7 @@ abstract class VmConditionalInstruction: VmInstruction {
             AM=M-1
             D=M
             A=A-1
-            D=D-M
+            D=M-D
             @TRUE_CONDITION_$counter
             D;${jumpCondition()}
             D=0
@@ -45,7 +45,7 @@ abstract class VmReducerInstruction: VmInstruction {
             AM=M-1
             D=M
             A=A-1
-            M=D${reducerOperand()}M
+            M=M${reducerOperand()}D
         """.trimIndent()
 }
 
