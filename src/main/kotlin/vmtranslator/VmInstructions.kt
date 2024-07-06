@@ -12,7 +12,7 @@ interface VmInstruction {
     }
 }
 
-abstract class VmConditionalInstruction: VmInstruction {
+abstract class VmConditionalInstruction : VmInstruction {
     abstract fun jumpCondition(): String
 
     final override fun toAsmInstructions(): String {
@@ -43,7 +43,7 @@ abstract class VmConditionalInstruction: VmInstruction {
     }
 }
 
-abstract class VmReducerInstruction: VmInstruction {
+abstract class VmReducerInstruction : VmInstruction {
     abstract fun reducerOperand(): String
 
     final override fun toAsmInstructions() = """
@@ -55,7 +55,7 @@ abstract class VmReducerInstruction: VmInstruction {
         """.trimIndent()
 }
 
-abstract class VmOperandInstruction: VmInstruction {
+abstract class VmOperandInstruction : VmInstruction {
     abstract fun operand(): String
 
     final override fun toAsmInstructions() = """
@@ -65,43 +65,43 @@ abstract class VmOperandInstruction: VmInstruction {
         """.trimIndent()
 }
 
-object AddInstruction: VmReducerInstruction() {
+object AddInstruction : VmReducerInstruction() {
     override fun reducerOperand() = "+"
 }
 
-object SubInstruction: VmReducerInstruction() {
+object SubInstruction : VmReducerInstruction() {
     override fun reducerOperand() = "-"
 }
 
-object AndInstruction: VmReducerInstruction() {
+object AndInstruction : VmReducerInstruction() {
     override fun reducerOperand() = "&"
 }
 
-object OrInstruction: VmReducerInstruction() {
+object OrInstruction : VmReducerInstruction() {
     override fun reducerOperand() = "|"
 }
 
-object EqInstruction: VmConditionalInstruction() {
+object EqInstruction : VmConditionalInstruction() {
     override fun jumpCondition() = "JEQ"
 }
 
-object GtInstruction: VmConditionalInstruction() {
+object GtInstruction : VmConditionalInstruction() {
     override fun jumpCondition() = "JGT"
 }
 
-object LtInstruction: VmConditionalInstruction() {
+object LtInstruction : VmConditionalInstruction() {
     override fun jumpCondition() = "JLT"
 }
 
-object NegInstruction: VmOperandInstruction() {
+object NegInstruction : VmOperandInstruction() {
     override fun operand() = "-"
 }
 
-object NotInstruction: VmOperandInstruction() {
+object NotInstruction : VmOperandInstruction() {
     override fun operand() = "!"
 }
 
-class PopSegmentInstruction(private val segment: String, private val address: Short): VmInstruction {
+class PopSegmentInstruction(private val segment: String, private val address: Short) : VmInstruction {
     override fun toAsmInstructions() = """
         @$address
         D=A
@@ -127,7 +127,7 @@ class PopSegmentInstruction(private val segment: String, private val address: Sh
     }
 }
 
-class PushSegmentInstruction(private val segment: String, private val address: Short): VmInstruction {
+class PushSegmentInstruction(private val segment: String, private val address: Short) : VmInstruction {
     override fun toAsmInstructions() = """
         @$address
         D=A
@@ -150,7 +150,7 @@ class PushSegmentInstruction(private val segment: String, private val address: S
     }
 }
 
-class PushConstantInstruction(private val constant: Short): VmInstruction {
+class PushConstantInstruction(private val constant: Short) : VmInstruction {
     override fun toAsmInstructions() = """
             @$constant
             D=A
@@ -161,7 +161,7 @@ class PushConstantInstruction(private val constant: Short): VmInstruction {
         """.trimIndent()
 }
 
-class PushStaticInstruction(private val address: Short): VmInstruction {
+class PushStaticInstruction(private val address: Short) : VmInstruction {
     override fun toAsmInstructions() = """
         @Foo.$address
         D=M
@@ -172,7 +172,7 @@ class PushStaticInstruction(private val address: Short): VmInstruction {
     """.trimIndent()
 }
 
-class PopStaticInstruction(private val address: Short): VmInstruction {
+class PopStaticInstruction(private val address: Short) : VmInstruction {
     override fun toAsmInstructions() = """
         @SP
         AM=M-1
@@ -182,9 +182,9 @@ class PopStaticInstruction(private val address: Short): VmInstruction {
     """.trimIndent()
 }
 
-class PopTempInstruction(private val address: Short): VmInstruction {
+class PopTempInstruction(private val address: Short) : VmInstruction {
     init {
-        require(address in 0..7) {"Address '$address' for temp instruction should be between 0 and 7"}
+        require(address in 0..7) { "Address '$address' for temp instruction should be between 0 and 7" }
     }
 
     override fun toAsmInstructions() = """
@@ -200,9 +200,9 @@ class PopTempInstruction(private val address: Short): VmInstruction {
     """.trimIndent()
 }
 
-class PushTempInstruction(private val address: Short): VmInstruction {
+class PushTempInstruction(private val address: Short) : VmInstruction {
     init {
-        require(address in 0..7) {"Address '$address' for temp instruction should be between 0 and 7"}
+        require(address in 0..7) { "Address '$address' for temp instruction should be between 0 and 7" }
     }
 
     override fun toAsmInstructions() = """
@@ -217,4 +217,47 @@ class PushTempInstruction(private val address: Short): VmInstruction {
         M=D
     """.trimIndent()
 
+}
+
+class PushPointerInstruction(private val pointerAddress: Short) : VmInstruction {
+    init {
+        require(pointerAddress in 0..1) { "Pointer '$pointerAddress' should be either 0 or 1" }
+    }
+
+    override fun toAsmInstructions() = """
+        @${pointerMap[pointerAddress]}
+        D=M
+        @SP
+        M=M+1
+        A=M-1
+        M=D
+    """.trimIndent()
+
+    companion object {
+        private val pointerMap = mapOf(
+            0.toShort() to "THIS",
+            1.toShort() to "THAT",
+        )
+    }
+}
+
+class PopPointerInstruction(private val pointerAddress: Short) : VmInstruction {
+    init {
+        require(pointerAddress in 0..1) { "Pointer '$pointerAddress' should be either 0 or 1" }
+    }
+
+    override fun toAsmInstructions() = """
+        @SP
+        AM=M-1
+        D=M
+        @${pointerMap[pointerAddress]}
+        M=D
+    """.trimIndent()
+
+    companion object {
+        private val pointerMap = mapOf(
+            0.toShort() to "THIS",
+            1.toShort() to "THAT",
+        )
+    }
 }
