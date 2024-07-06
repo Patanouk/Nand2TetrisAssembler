@@ -127,6 +127,13 @@ class PopSegmentInstruction(private val segment: String, private val address: Sh
     }
 }
 
+class PushSegmentInstruction(private val segment: String, private val address: Short): VmInstruction {
+    override fun toAsmInstructions() = """
+        
+    """.trimIndent()
+
+}
+
 class PushConstantInstruction(private val constant: Short): VmInstruction {
     override fun toAsmInstructions() = """
             @$constant
