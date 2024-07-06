@@ -129,9 +129,25 @@ class PopSegmentInstruction(private val segment: String, private val address: Sh
 
 class PushSegmentInstruction(private val segment: String, private val address: Short): VmInstruction {
     override fun toAsmInstructions() = """
-        
+        @$address
+        D=A
+        @${segmentToPointer[segment]}
+        A=D+M
+        D=M
+        @SP
+        M=M+1
+        A=M-1
+        M=D
     """.trimIndent()
 
+    companion object {
+        private val segmentToPointer = mapOf(
+            "local" to "LCL",
+            "argument" to "ARG",
+            "this" to "THIS",
+            "that" to "THAT",
+        )
+    }
 }
 
 class PushConstantInstruction(private val constant: Short): VmInstruction {
