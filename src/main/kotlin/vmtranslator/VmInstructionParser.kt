@@ -22,9 +22,7 @@ class VmInstructionParser {
     }
 
     private fun parsePopInstruction(vmInstruction: String): VmInstruction {
-        val splitPopInstruction = vmInstruction.trim().split(' ')
-        val segment = splitPopInstruction[1]
-        val address = splitPopInstruction[2].toShort()
+        val (segment, address) = splitInstruction(vmInstruction)
 
         return when (segment) {
             "local",
@@ -36,9 +34,7 @@ class VmInstructionParser {
     }
 
     private fun parsePushInstruction(vmInstruction: String): VmInstruction {
-        val splitPopInstruction = vmInstruction.trim().split(' ')
-        val segment = splitPopInstruction[1]
-        val address = splitPopInstruction[2].toShort()
+        val (segment, address) = splitInstruction(vmInstruction)
 
         return when (segment) {
             "local",
@@ -48,5 +44,13 @@ class VmInstructionParser {
             "constant" -> PushConstantInstruction(address)
             else -> throw IllegalArgumentException("Unsupported segmengt '$segment' in instruction '$vmInstruction'")
         }
+    }
+
+    private fun splitInstruction(vmInstruction: String): Pair<String, Short> {
+        val splitPopInstruction = vmInstruction.trim().split(' ')
+        val segment = splitPopInstruction[1]
+        val address = splitPopInstruction[2].toShort()
+
+        return Pair(segment, address)
     }
 }
