@@ -106,15 +106,12 @@ class PopSegmentInstruction(private val segment: String, private val address: Sh
         @$address
         D=A
         @${segmentToPointer[segment]}
-        D=D+M
-        @addr
-        M=D
+        D=D=M
         @SP
         AM=M-1
-        D=M
-        @addr
-        A=M
-        M=D
+        D=D+M
+        A=D-M
+        M=D-A
     """.trimIndent()
 
     companion object {
