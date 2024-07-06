@@ -188,10 +188,8 @@ class PopTempInstruction(private val address: Short) : VmInstruction {
     }
 
     override fun toAsmInstructions() = """
-        @$address
+        @${address + 5}
         D=A
-        @5
-        D=D+A
         @SP
         AM=M-1
         D=D+M
@@ -206,10 +204,7 @@ class PushTempInstruction(private val address: Short) : VmInstruction {
     }
 
     override fun toAsmInstructions() = """
-        @5
-        D=A
-        @$address
-        A=A+D
+        @${address+5}
         D=M
         @SP
         M=M+1
