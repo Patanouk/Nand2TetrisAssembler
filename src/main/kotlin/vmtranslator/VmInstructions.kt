@@ -160,3 +160,24 @@ class PushConstantInstruction(private val constant: Short): VmInstruction {
             M=D
         """.trimIndent()
 }
+
+class PushStaticInstruction(private val address: Short): VmInstruction {
+    override fun toAsmInstructions() = """
+        @Foo.$address
+        D=M
+        @SP
+        M=M+1
+        A=M-1
+        M=D
+    """.trimIndent()
+}
+
+class PopStaticInstruction(private val address: Short): VmInstruction {
+    override fun toAsmInstructions() = """
+        @SP
+        AM=M-1
+        D=M
+        @Foo.$address
+        M=D
+    """.trimIndent()
+}
