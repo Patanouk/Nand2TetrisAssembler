@@ -15,6 +15,7 @@ class VmInstructionParser {
                 equals("or") -> OrInstruction
                 equals("not") -> NotInstruction
                 startsWith("push constant") -> parsePushConstantInstruction(this)
+                startsWith("pop") -> parsePopInstruction(this)
                 else -> throw IllegalArgumentException("Unsupported Vm command '$vmInstruction'")
             }
         }
@@ -23,5 +24,19 @@ class VmInstructionParser {
     private fun parsePushConstantInstruction(vmInstruction: String): PushConstantInstruction {
         val constant = vmInstruction.substringAfter("push constant").trim().toShort()
         return PushConstantInstruction(constant)
+    }
+
+    private fun parsePopInstruction(vmInstruction: String): VmInstruction {
+        val splitPopInstruction = vmInstruction.trim().split(' ')
+        val segment = splitPopInstruction[1]
+        val address = splitPopInstruction[2].toShort()
+
+        return when (segment) {
+            "local",
+            "argument",
+            "this",
+            "that", -> PopSegmentInstruction(segment, address)
+            else -> throw IllegalArgumentException("Unsupported segmengt '$segment' in instruction '$vmInstruction'")
+        }
     }
 }

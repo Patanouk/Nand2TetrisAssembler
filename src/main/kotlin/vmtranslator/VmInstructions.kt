@@ -101,6 +101,32 @@ object NotInstruction: VmOperandInstruction() {
     override fun operand() = "!"
 }
 
+class PopSegmentInstruction(private val segment: String, private val address: Short): VmInstruction {
+    override fun toAsmInstructions() = """
+        @$address
+        D=A
+        @${segmentToPointer[segment]}
+        D=D+M
+        @addr
+        M=D
+        @SP
+        AM=M-1
+        D=M
+        @addr
+        A=M
+        M=D
+    """.trimIndent()
+
+    companion object {
+        private val segmentToPointer = mapOf(
+            "local" to "LCL",
+            "argument" to "ARG",
+            "this" to "THIS",
+            "that" to "THAT",
+        )
+    }
+}
+
 class PushConstantInstruction(private val constant: Short): VmInstruction {
     override fun toAsmInstructions() = """
             @$constant
