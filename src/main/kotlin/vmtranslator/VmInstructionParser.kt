@@ -1,6 +1,6 @@
 package vmtranslator
 
-class VmInstructionParser {
+class VmInstructionParser(private val fileName: String) {
 
     fun toInstruction(vmInstruction: String): VmInstruction {
         return with(vmInstruction.trim()) {
@@ -29,7 +29,7 @@ class VmInstructionParser {
             "argument",
             "this",
             "that", -> PopSegmentInstruction(segment, address)
-            "static" -> PopStaticInstruction(address)
+            "static" -> PopStaticInstruction(address, fileName)
             "temp" -> PopTempInstruction(address)
             "pointer" -> PopPointerInstruction(address)
             else -> throw IllegalArgumentException("Unsupported segmengt '$segment' in instruction '$vmInstruction'")
@@ -45,7 +45,7 @@ class VmInstructionParser {
             "this",
             "that", -> PushSegmentInstruction(segment, address)
             "constant" -> PushConstantInstruction(address)
-            "static" -> PushStaticInstruction(address)
+            "static" -> PushStaticInstruction(address, fileName)
             "temp" -> PushTempInstruction(address)
             "pointer" -> PushPointerInstruction(address)
             else -> throw IllegalArgumentException("Unsupported segmengt '$segment' in instruction '$vmInstruction'")

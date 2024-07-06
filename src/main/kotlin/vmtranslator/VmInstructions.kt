@@ -161,9 +161,9 @@ class PushConstantInstruction(private val constant: Short) : VmInstruction {
         """.trimIndent()
 }
 
-class PushStaticInstruction(private val address: Short) : VmInstruction {
+class PushStaticInstruction(private val address: Short, private val fileName: String) : VmInstruction {
     override fun toAsmInstructions() = """
-        @Foo.$address
+        @$fileName.$address
         D=M
         @SP
         M=M+1
@@ -172,12 +172,12 @@ class PushStaticInstruction(private val address: Short) : VmInstruction {
     """.trimIndent()
 }
 
-class PopStaticInstruction(private val address: Short) : VmInstruction {
+class PopStaticInstruction(private val address: Short, private val fileName: String) : VmInstruction {
     override fun toAsmInstructions() = """
         @SP
         AM=M-1
         D=M
-        @Foo.$address
+        @$fileName.$address
         M=D
     """.trimIndent()
 }

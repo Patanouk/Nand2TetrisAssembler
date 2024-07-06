@@ -7,7 +7,7 @@ import java.io.File
 
 class VmTranslator(private val vmInstructionFile: File) {
 
-    private val parser = VmInstructionParser()
+    private val parser = VmInstructionParser(vmInstructionFile.nameWithoutExtension)
 
     fun writeToFile(): File {
         val outputFile = FileUtils.getFileWithNewExtension(file = vmInstructionFile, newExtension = ".asm")
