@@ -30,6 +30,7 @@ class VmInstructionParser {
             "this",
             "that", -> PopSegmentInstruction(segment, address)
             "static" -> PopStaticInstruction(address)
+            "temp" -> PopTempInstruction(address)
             else -> throw IllegalArgumentException("Unsupported segmengt '$segment' in instruction '$vmInstruction'")
         }
     }
@@ -44,6 +45,7 @@ class VmInstructionParser {
             "that", -> PushSegmentInstruction(segment, address)
             "constant" -> PushConstantInstruction(address)
             "static" -> PushStaticInstruction(address)
+            "temp" -> PushTempInstruction(address)
             else -> throw IllegalArgumentException("Unsupported segmengt '$segment' in instruction '$vmInstruction'")
         }
     }

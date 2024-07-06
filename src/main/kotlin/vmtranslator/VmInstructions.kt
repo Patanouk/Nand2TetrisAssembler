@@ -181,3 +181,40 @@ class PopStaticInstruction(private val address: Short): VmInstruction {
         M=D
     """.trimIndent()
 }
+
+class PopTempInstruction(private val address: Short): VmInstruction {
+    init {
+        require(address in 0..7) {"Address '$address' for temp instruction should be between 0 and 7"}
+    }
+
+    override fun toAsmInstructions() = """
+        @$address
+        D=A
+        @5
+        D=D+A
+        @SP
+        AM=M-1
+        D=D+M
+        A=D-M
+        M=D-A
+    """.trimIndent()
+}
+
+class PushTempInstruction(private val address: Short): VmInstruction {
+    init {
+        require(address in 0..7) {"Address '$address' for temp instruction should be between 0 and 7"}
+    }
+
+    override fun toAsmInstructions() = """
+        @5
+        D=A
+        @$address
+        A=A+D
+        D=M
+        @SP
+        M=M+1
+        A=M-1
+        M=D
+    """.trimIndent()
+
+}
