@@ -2,7 +2,7 @@ package assembler
 
 class AsmInstructionParser(private val symbolTable: SymbolTable) {
 
-    fun toInstruction(asmInstruction: String): HackInstruction {
+    fun toInstruction(asmInstruction: String): AsmInstruction {
         return when (asmInstruction.first()) {
             '@' -> parseAInstruction(asmInstruction)
             else -> parseCInstruction(asmInstruction)

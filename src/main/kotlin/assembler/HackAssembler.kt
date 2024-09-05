@@ -28,7 +28,7 @@ class HackAssembler(private val asmInstructionFile: File) {
             .joinToString(System.lineSeparator()) { it.toHackBinary() }
     }
 
-    private fun parseInstruction(index: Int, asmLine: String): HackInstruction {
+    private fun parseInstruction(index: Int, asmLine: String): AsmInstruction {
         val result = asmInstructionParser.toInstruction(asmLine)
         println("Parsed line #$index '$asmLine' to $result")
         return result

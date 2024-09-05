@@ -1,10 +1,10 @@
 package assembler
 
-interface HackInstruction {
+interface AsmInstruction {
     fun toHackBinary(): String
 }
 
-data class AInstruction(val address: Short): HackInstruction {
+data class AInstruction(val address: Short): AsmInstruction {
 
     init {
         require(address >= 0) { "Negative address '$address' is not supported for A instructions" }
@@ -15,7 +15,7 @@ data class AInstruction(val address: Short): HackInstruction {
     }
 }
 
-data class CInstruction(val dest: String?, val comp: String, val jump: String?): HackInstruction {
+data class CInstruction(val dest: String?, val comp: String, val jump: String?): AsmInstruction {
 
     override fun toHackBinary(): String {
         val sortedDestination = dest?.toCharArray()?.apply { sort() }?.joinToString(separator = "")

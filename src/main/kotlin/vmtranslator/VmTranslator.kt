@@ -19,7 +19,7 @@ class VmTranslator(private val vmInstructionFile: File) {
         return vmInstructionFile.readLines()
             .map { removeComment(it) }
             .filterNot { isCommentLine(it) }
-            .joinToString(System.lineSeparator()) { "// $it" + System.lineSeparator() + parser.toInstruction(it).toAsmInstructions() }
+            .joinToString(System.lineSeparator()) { vmInstruction -> "// $vmInstruction${System.lineSeparator()}" + parser.toInstruction(vmInstruction).toAsmInstructions() }
     }
 
 }
