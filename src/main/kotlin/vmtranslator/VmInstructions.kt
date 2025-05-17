@@ -328,17 +328,21 @@ class FunctionInstruction(private val functionName: String, private val nVars: I
     override fun toAsmInstructions(): String {
         return """
             ($functionName)
-            @${nVars+1}
+            @$nVars
             D=A
             
             (INIT_ARGS_${functionName}_${RETURN_NUMBER})
+            @AFTER_INIT_ARGS_${functionName}_${RETURN_NUMBER}
+            D;JEQ
+            
             @SP
             M=M+1
             A=M-1
             M=0
             D=D-1
             @INIT_ARGS_${functionName}_${RETURN_NUMBER}
-            D;JNE
+            D;JMP
+            (AFTER_INIT_ARGS_${functionName}_${RETURN_NUMBER})
             
         """.trimIndent()
         }
