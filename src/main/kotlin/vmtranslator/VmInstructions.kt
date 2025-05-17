@@ -201,7 +201,7 @@ class PushTempInstruction(private val address: Short) : VmInstruction {
     }
 
     override fun toAsmInstructions() = """
-        @${address+5}
+        @${address + 5}
         D=M
         @SP
         M=M+1
@@ -254,8 +254,13 @@ class PopPointerInstruction(private val pointerAddress: Short) : VmInstruction {
     }
 }
 
+class GotoLabelInstruction(private val labelName: String) : VmInstruction {
+    override fun toAsmInstructions() = """
+        @$labelName
+        0;JMP
+    """.trimIndent()
+}
+
 class LabelInstruction(private val labelName: String) : VmInstruction {
-
     override fun toAsmInstructions() = "($labelName)"
-
 }
