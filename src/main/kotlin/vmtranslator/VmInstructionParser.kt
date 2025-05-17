@@ -70,7 +70,7 @@ class VmInstructionParser(private val fileName: String) {
 
     private fun parseIfGotoLabelInstruction(vmInstruction: String): VmInstruction {
         val labelName = vmInstruction.split(' ')[1]
-        TODO()
+        return IfGotoLabelInstruction(labelName)
     }
 
     private fun parseLabelInstruction(vmInstruction: String): VmInstruction {

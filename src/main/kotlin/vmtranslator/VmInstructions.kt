@@ -261,6 +261,17 @@ class GotoLabelInstruction(private val labelName: String) : VmInstruction {
     """.trimIndent()
 }
 
+class IfGotoLabelInstruction(private val labelName: String) : VmInstruction {
+    override fun toAsmInstructions() = """
+        @SP
+        AM=M-1
+        D=M
+        @$labelName
+        D;JNE
+    """.trimIndent()
+
+}
+
 class LabelInstruction(private val labelName: String) : VmInstruction {
     override fun toAsmInstructions() = "($labelName)"
 }
