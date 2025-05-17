@@ -10,12 +10,21 @@ class VmTranslator(private val vmInstructionFile: File) {
 
     fun writeToFile(): File {
         val outputFile = FileUtils.getFileWithNewExtension(file = vmInstructionFile, newExtension = ".asm")
-        outputFile.writeBytes(writeToString().toByteArray())
+
+        when(vmInstructionFile.isFile) {
+            true -> outputFile.writeBytes(writeToString(vmInstructionFile).toByteArray())
+            false -> vmInstructionFile.listFiles().forEach {
+                outputFile.writeBytes("// File : ${it.name}".toByteArray())
+                outputFile.writeBytes(writeToString(it).toByteArray())
+            }
+        }
+
+        outputFile.writeBytes(writeToString(vmInstructionFile).toByteArray())
         return outputFile
     }
 
-    fun writeToString(): String {
-        return vmInstructionFile.readLines()
+    private fun writeToString(vmFile: File): String {
+        return vmFile.readLines()
             .map { cleanupLine(it) }
             .filterNot { it.isEmpty() }
             .joinToString(System.lineSeparator()) { vmInstruction -> "// $vmInstruction${System.lineSeparator()}" + parser.toInstruction(vmInstruction).toAsmInstructions() }
