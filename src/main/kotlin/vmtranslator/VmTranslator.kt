@@ -10,9 +10,9 @@ class VmTranslator(private val vmInstructionFile: File) {
 
     fun writeToFile(): File {
         val outputFile = FileUtils.getFileWithNewExtension(file = vmInstructionFile, newExtension = ".asm")
+        outputFile.writeBytes("".toByteArray()) //Clear file
 
-        //Write instead of append, to clear the file
-        outputFile.writeBytes(INIT_INSTRUCTION)
+//        outputFile.appendBytes(INIT_INSTRUCTION)
 
         when(vmInstructionFile.isFile) {
             true -> outputFile.appendBytes(writeToString(vmInstructionFile).toByteArray())
