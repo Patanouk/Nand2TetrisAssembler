@@ -364,7 +364,7 @@ object ReturnInstruction: VmInstruction {
     override fun toAsmInstructions() = """
         @LCL
         D=M
-        @R0
+        @R13
         M=D
         
         @5
