@@ -29,6 +29,11 @@ class VmTranslator(private val vmInstructionFile: File) {
             }
         }
 
+        val trimmedAsmProgram = outputFile.readLines()
+            .joinToString(separator = System.lineSeparator()) { it.trim() }
+            .toByteArray()
+
+        outputFile.writeBytes(trimmedAsmProgram)
         return outputFile
     }
 
