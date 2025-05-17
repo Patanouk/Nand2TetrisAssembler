@@ -370,7 +370,7 @@ object ReturnInstruction: VmInstruction {
         @5
         A=D-A
         D=M
-        @R1
+        @R14
         M=D
         
         @SP
@@ -383,31 +383,31 @@ object ReturnInstruction: VmInstruction {
         @SP
         M=D
         
-        @R0
+        @R13
         AM=M-1
         D=M
         @THAT
         M=D
         
-        @R0
+        @R13
         AM=M-1
         D=M
         @THIS
         M=D
         
-        @R0
+        @R13
         AM=M-1
         D=M
         @ARG
         M=D
         
-        @R0
+        @R13
         AM=M-1
         D=M
         @LCL
         M=D
         
-        @R1
+        @R14
         A=M
         0;JMP
         
