@@ -16,6 +16,7 @@ class VmInstructionParser(private val fileName: String) {
                 equals("not") -> NotInstruction
                 startsWith("pop") -> parsePopInstruction(this)
                 startsWith("push") -> parsePushInstruction(this)
+                startsWith("label") -> parseLabelInstruction(this)
                 else -> throw IllegalArgumentException("Unsupported Vm command '$vmInstruction'")
             }
         }
@@ -58,5 +59,10 @@ class VmInstructionParser(private val fileName: String) {
         val address = splitPopInstruction[2].toShort()
 
         return Pair(segment, address)
+    }
+
+    private fun parseLabelInstruction(vmInstruction: String): VmInstruction {
+        val labelName = vmInstruction.split(' ')[1]
+        return LabelInstruction(labelName)
     }
 }

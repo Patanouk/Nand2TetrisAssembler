@@ -253,3 +253,9 @@ class PopPointerInstruction(private val pointerAddress: Short) : VmInstruction {
         )
     }
 }
+
+class LabelInstruction(private val labelName: String) : VmInstruction {
+
+    override fun toAsmInstructions() = "($labelName)"
+
+}
