@@ -12,7 +12,7 @@ class VmTranslator(private val vmInstructionFile: File) {
         val outputFile = FileUtils.getFileWithNewExtension(file = vmInstructionFile, newExtension = ".asm")
         outputFile.writeBytes("".toByteArray()) //Clear file
 
-//        outputFile.appendBytes(INIT_INSTRUCTION)
+        outputFile.appendBytes(INIT_INSTRUCTION)
 
         when(vmInstructionFile.isFile) {
             true -> outputFile.appendBytes(writeToString(vmInstructionFile).toByteArray())
