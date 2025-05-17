@@ -17,11 +17,7 @@ class VmTranslator(private val vmInstructionFile: File) {
         when(vmInstructionFile.isFile) {
             true -> outputFile.appendBytes(writeToString(vmInstructionFile).toByteArray())
             false -> vmInstructionFile.listFiles().forEach {
-                outputFile.appendBytes("""
-                    ${System.lineSeparator()}
-                    || File : ${it.name} ||
-                    ${System.lineSeparator()}
-                """.trimIndent().toByteArray())
+                outputFile.appendBytes(writeFileName(it))
                 outputFile.appendBytes(writeToString(it).toByteArray())
             }
         }
@@ -33,6 +29,13 @@ class VmTranslator(private val vmInstructionFile: File) {
         outputFile.writeBytes(trimmedAsmProgram)
         return outputFile
     }
+
+    private fun writeFileName(it: File) =
+        """
+            ${System.lineSeparator()}
+            // File : ${it.name} //
+            ${System.lineSeparator()}
+        """.trimIndent().toByteArray()
 
     private fun writeToString(vmFile: File): String {
         return vmFile.readLines()
