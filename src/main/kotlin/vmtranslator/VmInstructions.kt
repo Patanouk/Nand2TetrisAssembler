@@ -310,7 +310,7 @@ class CallInstruction(private val functionName: String, private val nArgs: Int) 
             @$functionName
             0;JMP
             
-            (@RET_${functionName}_${RETURN_NUMBER})
+            (RET_${functionName}_${RETURN_NUMBER})
         """.trimIndent()
     }
 
@@ -331,7 +331,7 @@ class FunctionInstruction(private val functionName: String, private val nVars: I
             @$nVars
             D=A
             
-            (@INIT_ARGS_${functionName}_${RETURN_NUMBER})
+            (INIT_ARGS_${functionName}_${RETURN_NUMBER})
             @SP
             M=M+1
             A=M-1
