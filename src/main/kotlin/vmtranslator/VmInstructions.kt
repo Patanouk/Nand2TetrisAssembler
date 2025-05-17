@@ -340,7 +340,6 @@ class FunctionInstruction(private val functionName: String, private val nVars: I
         D;JNE
         
     """.trimIndent()
-
 }
 
 object ReturnInstruction: VmInstruction {
