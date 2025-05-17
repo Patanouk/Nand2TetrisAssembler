@@ -342,11 +342,69 @@ class FunctionInstruction(private val functionName: String, private val nVars: I
     """.trimIndent()
 }
 
+/**
+ * This will
+ * 1. Save LCL in a variable (endFrame)
+ * 2. Save *(endFrame - 5) as retAddr
+ * 3. Set *ARG = pop() stack
+ * 4. SP = ARG + 1
+ * 5. THAT = *(endFrame – 1)
+ * 6. THIS = *(endFrame – 2)
+ * 7. ARG = *(endFrame – 3)
+ * 8. LCL = *(endFrame – 4)
+ * 9. goto retAddr
+ */
 object ReturnInstruction: VmInstruction {
     override fun toAsmInstructions() = """
         @LCL
         D=M
         @R0
+        M=D
+        
+        @5
+        A=D-A
+        D=M
+        @R1
+        M=D
+        
+        @SP
+        AM=M-1
+        D=M
+        @ARG
+        M=D
+        D=A
+        
+        @SP
+        M=D
+        
+        @R0
+        AM=M-1
+        D=M
+        @THAT
+        M=D
+        
+        @R0
+        AM=M-1
+        D=M
+        @THIS
+        M=D
+        
+        @R0
+        AM=M-1
+        D=M
+        @ARG
+        M=D
+        
+        @R0
+        AM=M-1
+        D=M
+        @LCL
+        M=D
+        
+        @R1
+        A=M
+        0;JMP
+        
     """.trimIndent()
 
 }
