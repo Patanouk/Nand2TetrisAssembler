@@ -39,6 +39,7 @@ class VmTranslator(private val vmInstructionFile: File) {
 
     companion object {
         private val INIT_INSTRUCTION = """
+           //INIT CODE
            @256
            D=A
            @SP
