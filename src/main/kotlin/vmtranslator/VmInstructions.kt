@@ -343,7 +343,7 @@ class FunctionInstruction(private val functionName: String, private val nVars: I
 
 }
 
-class ReturnInstruction(): VmInstruction {
+object ReturnInstruction: VmInstruction {
     override fun toAsmInstructions() = """
         @LCL
         D=M

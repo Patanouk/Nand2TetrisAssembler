@@ -19,6 +19,9 @@ class VmInstructionParser(private val fileName: String) {
                 startsWith("goto") -> parseGotoLabelInstruction(this)
                 startsWith("if-goto") -> parseIfGotoLabelInstruction(this)
                 startsWith("label") -> parseLabelInstruction(this)
+                startsWith("call") -> parseCallInstruction(this)
+                startsWith("function") -> parseFunctionInstruction(this)
+                equals("return") -> ReturnInstruction
                 else -> throw IllegalArgumentException("Unsupported Vm command '$vmInstruction'")
             }
         }
@@ -76,5 +79,21 @@ class VmInstructionParser(private val fileName: String) {
     private fun parseLabelInstruction(vmInstruction: String): VmInstruction {
         val labelName = vmInstruction.split(' ')[1]
         return LabelInstruction(labelName)
+    }
+
+    private fun parseCallInstruction(vmInstruction: String): VmInstruction {
+        val split = vmInstruction.split(' ')
+        val functionName = split[1]
+        val nArgs = split[2].toInt()
+
+        return CallInstruction(functionName, nArgs)
+    }
+
+    private fun parseFunctionInstruction(vmInstruction: String): VmInstruction {
+        val split = vmInstruction.split(' ')
+        val functionName = split[1]
+        val nVars = split[2].toInt()
+
+        return FunctionInstruction(functionName, nVars)
     }
 }
