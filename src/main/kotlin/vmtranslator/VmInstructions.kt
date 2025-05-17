@@ -307,6 +307,30 @@ class CallInstruction(private val functionName: String, private val nArgs: Int) 
     }
 }
 
+/**
+ * This will
+ * 1. Generate a label name with the function name
+ * 2. Push as many zero to the stack as nVars
+ */
+class FunctionInstruction(private val functionName: String, private val nVars: Int) : VmInstruction {
+    override fun toAsmInstructions() = """
+        ($functionName)
+        @$nVars
+        D=A
+        
+        (LOOP_INIT_ARGS)
+        @SP
+        M=M+1
+        A=M-1
+        M=0
+        D=D-1
+        @LOOP_INIT_ARGS
+        D;JNE
+        
+    """.trimIndent()
+
+}
+
 private fun pushDRegisterToStack() = """
         @SP
         M=M+1
