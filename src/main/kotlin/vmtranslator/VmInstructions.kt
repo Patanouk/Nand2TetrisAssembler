@@ -131,10 +131,7 @@ class PushSegmentInstruction(private val segment: String, private val address: S
         @${segmentToPointer[segment]}
         A=D+M
         D=M
-        @SP
-        M=M+1
-        A=M-1
-        M=D
+        ${pushDRegisterToStack()}
     """.trimIndent()
 
     companion object {
@@ -151,10 +148,7 @@ class PushConstantInstruction(private val constant: Short) : VmInstruction {
     override fun toAsmInstructions() = """
             @$constant
             D=A
-            @SP
-            M=M+1
-            A=M-1
-            M=D
+            ${pushDRegisterToStack()}
         """.trimIndent()
 }
 
@@ -162,10 +156,7 @@ class PushStaticInstruction(private val address: Short, private val fileName: St
     override fun toAsmInstructions() = """
         @$fileName.$address
         D=M
-        @SP
-        M=M+1
-        A=M-1
-        M=D
+        ${pushDRegisterToStack()}
     """.trimIndent()
 }
 
@@ -203,10 +194,7 @@ class PushTempInstruction(private val address: Short) : VmInstruction {
     override fun toAsmInstructions() = """
         @${address + 5}
         D=M
-        @SP
-        M=M+1
-        A=M-1
-        M=D
+        ${pushDRegisterToStack()}
     """.trimIndent()
 
 }
@@ -219,10 +207,7 @@ class PushPointerInstruction(private val pointerAddress: Short) : VmInstruction 
     override fun toAsmInstructions() = """
         @${pointerMap[pointerAddress]}
         D=M
-        @SP
-        M=M+1
-        A=M-1
-        M=D
+        ${pushDRegisterToStack()}
     """.trimIndent()
 
     companion object {
@@ -275,3 +260,56 @@ class IfGotoLabelInstruction(private val labelName: String) : VmInstruction {
 class LabelInstruction(private val labelName: String) : VmInstruction {
     override fun toAsmInstructions() = "($labelName)"
 }
+
+class callInstruction(private val functionName: String, private val nArgs: Int) : VmInstruction {
+
+    override fun toAsmInstructions() = """
+        @$returnAddressLabel
+        D=A
+        ${pushDRegisterToStack()}
+        
+        @LCL
+        D=M
+        ${pushDRegisterToStack()}
+        
+        @ARG
+        D=M
+        ${pushDRegisterToStack()}
+        
+        @THIS
+        D=M
+        ${pushDRegisterToStack()}
+        
+        @THAT
+        D=M
+        ${pushDRegisterToStack()}
+        
+        @{$nArgs + 5}
+        D=A
+        @SP
+        D=A-D
+        @ARG
+        M=D
+        
+        @SP
+        D=A
+        @LCL
+        M=D
+        
+        @$functionName
+        0;JMP
+        
+        ($returnAddressLabel)
+    """.trimIndent()
+
+    companion object {
+        private const val returnAddressLabel = "retAddrLabel"
+    }
+}
+
+private fun pushDRegisterToStack() = """
+        @SP
+        M=M+1
+        A=M-1
+        M=D
+""".trimIndent()
