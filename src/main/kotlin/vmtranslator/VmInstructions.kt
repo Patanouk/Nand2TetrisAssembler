@@ -261,10 +261,10 @@ class LabelInstruction(private val labelName: String) : VmInstruction {
     override fun toAsmInstructions() = "($labelName)"
 }
 
-class callInstruction(private val functionName: String, private val nArgs: Int) : VmInstruction {
+class CallInstruction(private val functionName: String, private val nArgs: Int) : VmInstruction {
 
     override fun toAsmInstructions() = """
-        @$returnAddressLabel
+        @$RETURN_ADDRESS_LABEL
         D=A
         ${pushDRegisterToStack()}
         
@@ -299,11 +299,11 @@ class callInstruction(private val functionName: String, private val nArgs: Int) 
         @$functionName
         0;JMP
         
-        ($returnAddressLabel)
+        ($RETURN_ADDRESS_LABEL)
     """.trimIndent()
 
     companion object {
-        private const val returnAddressLabel = "retAddrLabel"
+        private const val RETURN_ADDRESS_LABEL = "retAddrLabel"
     }
 }
 
