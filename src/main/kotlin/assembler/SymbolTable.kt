@@ -1,7 +1,6 @@
 package assembler
 
-import utils.isCommentLine
-import utils.sanitizeLine
+import utils.cleanupLine
 
 class SymbolTable(asmInstructions: List<String>) {
 
@@ -42,8 +41,8 @@ class SymbolTable(asmInstructions: List<String>) {
         val currentLabels= mutableSetOf<String>()
 
         for (asmInstruction in asmInstructions) {
-            val sanitizeAsmLine = sanitizeLine(asmInstruction)
-            if (isCommentLine(sanitizeAsmLine)) {
+            val sanitizeAsmLine = cleanupLine(asmInstruction)
+            if (sanitizeAsmLine.isEmpty()) {
                 continue
             }
 

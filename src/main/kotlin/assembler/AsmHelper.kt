@@ -1,5 +1,5 @@
 package assembler
 
-import utils.sanitizeLine
+import utils.cleanupLine
 
-fun isLabelSymbolLine(asmLine: String) = sanitizeLine(asmLine).startsWith('(')
+fun isLabelSymbolLine(asmLine: String) = cleanupLine(asmLine).startsWith('(')

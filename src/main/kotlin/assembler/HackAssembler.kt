@@ -1,8 +1,7 @@
 package assembler
 
 import utils.FileUtils
-import utils.isCommentLine
-import utils.sanitizeLine
+import utils.cleanupLine
 import java.io.File
 
 class HackAssembler(private val asmInstructionFile: File) {
@@ -18,8 +17,8 @@ class HackAssembler(private val asmInstructionFile: File) {
 
     fun writeToString(): String {
         val asmInstructionsOnly = asmInstructionFile.readLines().asSequence()
-            .map { sanitizeLine(it) }
-            .filterNot { isCommentLine(it) }
+            .map { cleanupLine(it) }
+            .filterNot { it.isEmpty() }
             .filterNot { isLabelSymbolLine(it) }
 
 

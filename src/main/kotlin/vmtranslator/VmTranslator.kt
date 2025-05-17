@@ -1,8 +1,7 @@
 package vmtranslator
 
 import utils.FileUtils
-import utils.isCommentLine
-import utils.removeComment
+import utils.cleanupLine
 import java.io.File
 
 class VmTranslator(private val vmInstructionFile: File) {
@@ -17,8 +16,8 @@ class VmTranslator(private val vmInstructionFile: File) {
 
     fun writeToString(): String {
         return vmInstructionFile.readLines()
-            .map { removeComment(it) }
-            .filterNot { isCommentLine(it) }
+            .map { cleanupLine(it) }
+            .filterNot { it.isEmpty() }
             .joinToString(System.lineSeparator()) { vmInstruction -> "// $vmInstruction${System.lineSeparator()}" + parser.toInstruction(vmInstruction).toAsmInstructions() }
     }
 
