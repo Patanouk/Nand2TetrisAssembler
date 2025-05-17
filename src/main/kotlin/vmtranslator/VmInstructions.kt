@@ -378,10 +378,9 @@ object ReturnInstruction: VmInstruction {
         D=M
         @ARG
         M=D
-        D=A
         
         @SP
-        M=D
+        M=D+1
         
         @R13
         AM=M-1
