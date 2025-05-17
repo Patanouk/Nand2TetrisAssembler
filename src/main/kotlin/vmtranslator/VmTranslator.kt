@@ -12,14 +12,7 @@ class VmTranslator(private val vmInstructionFile: File) {
         val outputFile = FileUtils.getFileWithNewExtension(file = vmInstructionFile, newExtension = ".asm")
 
         //Write instead of append, to clear the file
-        outputFile.writeBytes("""
-           @256
-           D=A
-           @SP
-           M=D
-           
-           ${CallInstruction("Sys.init", 0).toAsmInstructions()}
-        """.trimIndent().toByteArray())
+        outputFile.writeBytes(INIT_INSTRUCTION)
 
         when(vmInstructionFile.isFile) {
             true -> outputFile.appendBytes(writeToString(vmInstructionFile).toByteArray())
@@ -42,6 +35,17 @@ class VmTranslator(private val vmInstructionFile: File) {
             .map { cleanupLine(it) }
             .filterNot { it.isEmpty() }
             .joinToString(System.lineSeparator()) { vmInstruction -> "// $vmInstruction${System.lineSeparator()}" + parser.toInstruction(vmInstruction).toAsmInstructions() }
+    }
+
+    companion object {
+        private val INIT_INSTRUCTION = """
+           @256
+           D=A
+           @SP
+           M=D
+           
+           ${CallInstruction("Sys.init", 0).toAsmInstructions()}
+        """.trimIndent().toByteArray()
     }
 
 }
