@@ -2,5 +2,5 @@ package utils
 
 fun cleanupLine(instruction: String) = instruction
     .substringBefore("//")
-    .replace(" ", "")
+    .trim()
     .replace("\t", "")
