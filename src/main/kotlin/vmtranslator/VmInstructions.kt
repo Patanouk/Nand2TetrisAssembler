@@ -261,6 +261,14 @@ class LabelInstruction(private val labelName: String) : VmInstruction {
     override fun toAsmInstructions() = "($labelName)"
 }
 
+/**
+ * This will
+ * 1. Push the (returned_address) label of the function
+ * 2. Push LCL, ARG, THIS, THAT in that order
+ * 3. Set ARG to SP - 5 (number of previously pushed vars) - nArgs
+ * 4. Set LCL to SP
+ * 5. Create the (returned_address)
+ */
 class CallInstruction(private val functionName: String, private val nArgs: Int) : VmInstruction {
 
     override fun toAsmInstructions() = """
