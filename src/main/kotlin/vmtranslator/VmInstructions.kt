@@ -275,7 +275,7 @@ class CallInstruction(private val functionName: String, private val nArgs: Int) 
         RETURN_NUMBER += 1
 
         return """
-            @ret_${functionName}_${RETURN_NUMBER}
+            @RET_${functionName}_${RETURN_NUMBER}
             D=A
             ${pushDRegisterToStack()}
             
@@ -310,7 +310,7 @@ class CallInstruction(private val functionName: String, private val nArgs: Int) 
             @$functionName
             0;JMP
             
-            (@ret_${functionName}_${RETURN_NUMBER})
+            (@RET_${functionName}_${RETURN_NUMBER})
         """.trimIndent()
     }
 
@@ -325,21 +325,27 @@ class CallInstruction(private val functionName: String, private val nArgs: Int) 
  * 2. Push as many zero to the stack as nVars
  */
 class FunctionInstruction(private val functionName: String, private val nVars: Int) : VmInstruction {
-    override fun toAsmInstructions() = """
-        ($functionName)
-        @$nVars
-        D=A
-        
-        (LOOP_INIT_ARGS)
-        @SP
-        M=M+1
-        A=M-1
-        M=0
-        D=D-1
-        @LOOP_INIT_ARGS
-        D;JNE
-        
-    """.trimIndent()
+    override fun toAsmInstructions(): String {
+        return """
+            ($functionName)
+            @$nVars
+            D=A
+            
+            (@INIT_ARGS_${functionName}_${RETURN_NUMBER})
+            @SP
+            M=M+1
+            A=M-1
+            M=0
+            D=D-1
+            @INIT_ARGS_${functionName}_${RETURN_NUMBER}
+            D;JNE
+            
+        """.trimIndent()
+        }
+
+    companion object {
+        private var RETURN_NUMBER = 0
+    }
 }
 
 /**
