@@ -328,7 +328,7 @@ class FunctionInstruction(private val functionName: String, private val nVars: I
     override fun toAsmInstructions(): String {
         return """
             ($functionName)
-            @$nVars
+            @${nVars+1}
             D=A
             
             (INIT_ARGS_${functionName}_${RETURN_NUMBER})
