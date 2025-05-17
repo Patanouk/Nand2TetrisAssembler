@@ -19,7 +19,6 @@ class VmTranslator(private val vmInstructionFile: File) {
             }
         }
 
-        outputFile.writeBytes(writeToString(vmInstructionFile).toByteArray())
         return outputFile
     }
 
