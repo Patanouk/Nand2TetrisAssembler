@@ -271,47 +271,51 @@ class LabelInstruction(private val labelName: String) : VmInstruction {
  */
 class CallInstruction(private val functionName: String, private val nArgs: Int) : VmInstruction {
 
-    override fun toAsmInstructions() = """
-        @$RETURN_ADDRESS_LABEL
-        D=A
-        ${pushDRegisterToStack()}
-        
-        @LCL
-        D=M
-        ${pushDRegisterToStack()}
-        
-        @ARG
-        D=M
-        ${pushDRegisterToStack()}
-        
-        @THIS
-        D=M
-        ${pushDRegisterToStack()}
-        
-        @THAT
-        D=M
-        ${pushDRegisterToStack()}
-        
-        @{$nArgs + 5}
-        D=A
-        @SP
-        D=A-D
-        @ARG
-        M=D
-        
-        @SP
-        D=A
-        @LCL
-        M=D
-        
-        @$functionName
-        0;JMP
-        
-        ($RETURN_ADDRESS_LABEL)
-    """.trimIndent()
+    override fun toAsmInstructions(): String {
+        RETURN_NUMBER += 1
+
+        return """
+            @ret_${functionName}_${RETURN_NUMBER}
+            D=A
+            ${pushDRegisterToStack()}
+            
+            @LCL
+            D=M
+            ${pushDRegisterToStack()}
+            
+            @ARG
+            D=M
+            ${pushDRegisterToStack()}
+            
+            @THIS
+            D=M
+            ${pushDRegisterToStack()}
+            
+            @THAT
+            D=M
+            ${pushDRegisterToStack()}
+            
+            @{$nArgs + 5}
+            D=A
+            @SP
+            D=A-D
+            @ARG
+            M=D
+            
+            @SP
+            D=A
+            @LCL
+            M=D
+            
+            @$functionName
+            0;JMP
+            
+            (@ret_${functionName}_${RETURN_NUMBER})
+        """.trimIndent()
+    }
 
     companion object {
-        private const val RETURN_ADDRESS_LABEL = "retAddrLabel"
+        private var RETURN_NUMBER = 0
     }
 }
 
@@ -335,6 +339,15 @@ class FunctionInstruction(private val functionName: String, private val nVars: I
         @LOOP_INIT_ARGS
         D;JNE
         
+    """.trimIndent()
+
+}
+
+class ReturnInstruction(): VmInstruction {
+    override fun toAsmInstructions() = """
+        @LCL
+        D=M
+        @R0
     """.trimIndent()
 
 }
