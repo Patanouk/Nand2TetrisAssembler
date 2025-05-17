@@ -295,7 +295,7 @@ class CallInstruction(private val functionName: String, private val nArgs: Int) 
             D=M
             ${pushDRegisterToStack()}
             
-            @{$nArgs + 5}
+            @{${nArgs + 5}}
             D=A
             @SP
             D=A-D
