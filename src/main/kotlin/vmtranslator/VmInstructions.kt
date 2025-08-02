@@ -331,12 +331,11 @@ class FunctionInstruction(private val functionName: String, private val nVars: I
             @$nVars
             D=A
             
-(INIT_ARGS_${functionName}_${RETURN_NUMBER})
+            (INIT_ARGS_${functionName}_${RETURN_NUMBER})
             @AFTER_INIT_ARGS_${functionName}_${RETURN_NUMBER}
             D;JEQ
-
-                       
-@SP
+            
+            @SP
             M=M+1
             A=M-1
             M=0
@@ -378,7 +377,7 @@ object ReturnInstruction: VmInstruction {
         @R14
         M=D
         
-@SP
+        @SP
         AM=M-1
         D=M
         @ARG
