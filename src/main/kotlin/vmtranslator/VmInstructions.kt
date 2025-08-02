@@ -294,19 +294,19 @@ class CallInstruction(private val functionName: String, private val nArgs: Int) 
             @THAT
             D=M
             ${pushDRegisterToStack()}
-            
-            @${nArgs + 5}
-            D=A
+
             @SP
-            D=A-D
+            D=M
+            @${nArgs + 5}
+            D=D-A
             @ARG
             M=D
-            
+
             @SP
-            D=A
+            D=M
             @LCL
             M=D
-            
+
             @$functionName
             0;JMP
             
@@ -331,11 +331,12 @@ class FunctionInstruction(private val functionName: String, private val nVars: I
             @$nVars
             D=A
             
-            (INIT_ARGS_${functionName}_${RETURN_NUMBER})
+(INIT_ARGS_${functionName}_${RETURN_NUMBER})
             @AFTER_INIT_ARGS_${functionName}_${RETURN_NUMBER}
             D;JEQ
-            
-            @SP
+
+                       
+@SP
             M=M+1
             A=M-1
             M=0
@@ -377,7 +378,7 @@ object ReturnInstruction: VmInstruction {
         @R14
         M=D
         
-        @SP
+@SP
         AM=M-1
         D=M
         @ARG
@@ -390,25 +391,33 @@ object ReturnInstruction: VmInstruction {
         M=D+1
         
         @R13
-        AM=M-1
+        D=M
+        @1
+        A=D-A
         D=M
         @THAT
         M=D
-        
+
         @R13
-        AM=M-1
+        D=M
+        @2
+        A=D-A
         D=M
         @THIS
         M=D
-        
+
         @R13
-        AM=M-1
+        D=M
+        @3
+        A=D-A
         D=M
         @ARG
         M=D
-        
+
         @R13
-        AM=M-1
+        D=M
+        @4
+        A=D-A
         D=M
         @LCL
         M=D
