@@ -6,8 +6,6 @@ import java.io.File
 
 class VmTranslator(private val vmInstructionFile: File) {
 
-    private val parser = VmInstructionParser(vmInstructionFile.nameWithoutExtension)
-
     fun writeToFile(): File {
         val outputFile = FileUtils.getFileWithNewExtension(file = vmInstructionFile, newExtension = ".asm")
         outputFile.writeBytes("".toByteArray()) //Clear file
@@ -38,6 +36,8 @@ class VmTranslator(private val vmInstructionFile: File) {
         """.trimIndent().toByteArray()
 
     private fun writeToString(vmFile: File): String {
+        val parser = VmInstructionParser(vmFile.nameWithoutExtension)
+
         return vmFile.readLines()
             .map { cleanupLine(it) }
             .filterNot { it.isEmpty() }
@@ -51,7 +51,7 @@ class VmTranslator(private val vmInstructionFile: File) {
            D=A
            @SP
            M=D
-           
+
            ${CallInstruction("Sys.init", 0).toAsmInstructions()}
         """.trimIndent().toByteArray()
     }
